@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/14 14:22:24 by ybarbier          #+#    #+#             */
-/*   Updated: 2014/11/15 21:35:26 by ybarbier         ###   ########.fr       */
+/*   Updated: 2014/11/16 19:16:29 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,6 @@
 
 typedef unsigned int t_uint;
 
-typedef struct	s_argv
-{
-	char		**flags;
-	char		**files;
-	char		**directories;
-}				t_argv;
 
 typedef struct s_flags
 {
@@ -42,10 +36,18 @@ typedef struct s_flags
 	t_uint		flag_a;
 	t_uint		flag_r;
 	t_uint		flag_t;
+	t_uint		flag_error;
 }				t_flags;
+
+typedef struct	s_arg
+{
+	char		**files;
+	char		**directories;
+	t_flags		*flags;
+}				t_arg;
 
 void	ft_ls(char *name_dir);
 void	set_flags(t_flags *flags);
-t_flags	*argv_parse(int argc, const char **argv, t_flags *flags);
+t_flags	*arg_parse(int argc, const char **argv, t_flags *flags);
 
 #endif

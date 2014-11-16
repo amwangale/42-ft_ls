@@ -6,7 +6,7 @@
 #    By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/03 11:35:46 by ybarbier          #+#    #+#              #
-#    Updated: 2014/11/15 13:36:57 by ybarbier         ###   ########.fr        #
+#    Updated: 2014/11/16 14:52:25 by ybarbier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
 SRC = 	$(PATH_SRC)ft_ls.c \
+		$(PATH_SRC)ft_arg.c \
 		$(PATH_SRC)main.c
 
 OBJ = $(patsubst %.c,%.o,$(SRC))
