@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/16 14:50:14 by ybarbier          #+#    #+#             */
-/*   Updated: 2014/11/16 19:36:32 by ybarbier         ###   ########.fr       */
+/*   Updated: 2014/11/17 20:15:55 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_flags	*arg_parse(int argc, const char **argv, t_flags *flags)
 	struct stat *file_stat;
 	char		*str_error;
 	t_arg		*arg;
+	t_list_ls	*list;
 
 	i = 1;
 	set_flags(flags);
@@ -37,13 +38,16 @@ t_flags	*arg_parse(int argc, const char **argv, t_flags *flags)
 				flags->flag_r = 1;
 			if (argv[i][j] == 't')
 				flags->flag_t = 1;
-			if (argv[i][j] == 't')
-				flags->flag_t = 1;
 			j++;
 		}
 		i++;
 	}	
 	file_stat = malloc(sizeof(stat));
+	// ft_putnbr(argc - i);
+	list = ft_lst_d_new();
+	if(!(arg = (t_arg*)malloc(sizeof(t_arg) * 1)))
+		return (NULL);
+	arg->ls_arg = list;
 	while ((i < argc))
 	{
 		// argv[i]
@@ -59,16 +63,31 @@ t_flags	*arg_parse(int argc, const char **argv, t_flags *flags)
 			perror(str_error);
 		}
 		else if (S_ISDIR(file_stat->st_mode))
-			ft_putstr("Directory ");
+		{
+			ft_putstr("Directories ");
+			list = ft_lst_new();
+			list->is_dir = 1;
+			list->prev = arg->ls_arg;
+			ft_lst_add(&(arg->ls_arg), list);
+		}
 		else if (S_ISREG(file_stat->st_mode))
 			ft_putstr("File ");
+			list = ft_lst_new();
+			list->is_dir = 0;
+			list->prev = arg->ls_arg;
+			ft_lst_add(&(arg->ls_arg), list);
 		// ft_putnbr(file_stat->st_ino);
 		// ft_putstr("\t");
 		// ft_putnbr(file_stat->st_mode);
 		ft_putstr("\n");
-
 		i++;
 	}
+	while (arg->ls_arg->prev)
+	{
+		ft_putnbr(arg->ls_arg->is_dir);
+		arg->ls_arg = arg->ls_arg->prev;
+	}
+	
 	return (flags);
 }
 
