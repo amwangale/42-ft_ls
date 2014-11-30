@@ -6,7 +6,7 @@
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/14 14:22:24 by ybarbier          #+#    #+#             */
-/*   Updated: 2014/11/17 20:07:41 by ybarbier         ###   ########.fr       */
+/*   Updated: 2014/11/27 18:07:39 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,31 @@
 # include <time.h>
 # include <stdio.h>
 # include <string.h>
+# include <errno.h>
 # include "./libft/includes/libft.h"
 
+# define TITLE "ft_ls"
+
 typedef unsigned int t_uint;
+typedef struct stat	t_stat;
 
 typedef struct 			s_list_ls
 {
-	// void			*content;
-	// size_t 			content_size;
-	struct stat			stat;
+	char				*name;
+	char				*path;
+	t_stat				*st;
 	t_uint				is_dir;
 	struct s_list_ls	*prev;
 	struct s_list_ls	*next;
 }						t_list_ls;
-
+/*
+typedef struct			s_list_elem
+{
+	char				*name;
+	t_stat				st;
+	t_uint				is_dir;
+}						t_list_elem;
+*/
 typedef struct s_flags
 {
 	t_uint		flag_l;
@@ -48,19 +59,29 @@ typedef struct s_flags
 	t_uint		flag_error;
 }				t_flags;
 
-typedef struct		s_arg
-{
-	// t_list_ls		*files;
-	// t_list_ls		*dirs;
-	t_list_ls		*ls_arg;
-	t_flags			*flags;
-}					t_arg;
+// void	ft_lst_put_between(t_list_ls *elem1, t_list_ls *elem2, t_list_ls *elem);
+// void	ft_lst_put(t_list_ls *elem1, t_list_ls *elem2);
+int			arg_parse_flags(t_flags *flags, const char **argv);
+// t_list_elem	*ft_lst_create_elem(char *name, t_stat st);
+t_list_ls		*ft_lst_create(void);
+void			ft_lst_put(t_list_ls *elem1, t_list_ls *elem2);
+t_list_ls 		*ft_add_elem(t_list_ls *lst, char *name, char *path, t_stat *st);
+void 			ft_read_arg(char *arg_name_dir);
+t_uint 			ft_arg_exist_dir_file(char *name);
 
-void		ft_ls(char *name_dir);
-void		set_flags(t_flags *flags);
-t_flags		*arg_parse(int argc, const char **argv, t_flags *flags);
-t_list_ls	*ft_lst_d_new(void);
-t_list_ls	*ft_lst_new(void);
-void	ft_lst_add(t_list_ls **alst, t_list_ls *new);
+/*Error gestion*/
+void 			ft_exit(void);
+void 			ft_error(char *str_error);
+void 			ft_error_exit(char *str_error);
+void 			ft_error_flags(char flag);
+// t_list	*ft_lst_create(void);
+// void		ft_ls(char *name_dir);
+// void		set_flags(t_flags *flags);
+// t_flags		*arg_parse(int argc, const char **argv, t_flags *flags);
+// t_list_ls	*ft_lst_d_new(void);
+// t_list_ls	*ft_lst_new(void);
+// void	ft_lst_add(t_list_ls **alst, t_list_ls *new);
+// void	ft_lst_add_end(t_list_ls **alst, t_list_ls *new);
+// void	read_list(t_list_ls **list);
 
 #endif

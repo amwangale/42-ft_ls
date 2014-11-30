@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/14 14:20:52 by ybarbier          #+#    #+#             */
-/*   Updated: 2014/11/17 14:58:45 by ybarbier         ###   ########.fr       */
+/*   Created: 2014/11/19 11:50:35 by ybarbier          #+#    #+#             */
+/*   Updated: 2014/11/28 17:41:50 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,29 @@
 
 int		main(int argc, char const *argv[])
 {
-	// int i;
-	t_flags *flags;
-	if (argc == 1)
-		ft_ls(".");
+	int		nb_arg;
+	t_flags	*flags;
 
 	if(!(flags = (t_flags*)malloc(sizeof(t_flags) * 1)))
 		return (-1);
-	flags = arg_parse(argc, argv, flags);
-	// ft_putstr("Flag");
 
-	// i = 1;
-	// while (i < argc)
-		// ft_ls((char*)argv[i]), i++;
+	// lst = NULL;
 
-	// if (flags->flag_error == 1)
-	// 	ft_putstr(" error");
+	nb_arg = arg_parse_flags(flags, argv);
+
+	while (nb_arg < argc)
+	{
+		ft_read_arg((char*)argv[nb_arg]);
+		nb_arg++;
+	}
+/*
+	ft_putnbr(argc);
+	ft_putchar('\n');
+	ft_putnbr(nb_arg);
+
+
+	if (flags->flag_error == 1)
+		ft_putstr(" error");
 	if (flags->flag_l == 1)
 		ft_putstr(" -l");
 	if (flags->flag_R == 1)
@@ -40,6 +47,6 @@ int		main(int argc, char const *argv[])
 		ft_putstr(" -r");
 	if (flags->flag_t == 1)
 		ft_putstr(" -t");
-
+*/
 	return (0);
 }

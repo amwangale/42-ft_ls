@@ -3,63 +3,89 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybarbier <ybarbier@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ybarbier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/14 14:22:15 by ybarbier          #+#    #+#             */
-/*   Updated: 2014/11/17 20:07:21 by ybarbier         ###   ########.fr       */
+/*   Created: 2014/11/29 16:21:18 by ybarbier          #+#    #+#             */
+/*   Updated: 2014/11/29 16:21:20 by ybarbier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	ft_ls(char *name_dir)
+t_list_ls *ft_add_elem(t_list_ls *lst, char *name, char *path, t_stat *st)
 {
-	DIR *dir;
-	struct dirent *ent;
+    t_list_ls *elem;
 
-	// stat(name_dir, buf);
-	
-	if ((dir = opendir(name_dir)))
-	{
-		while ((ent = readdir(dir)))
-		{
-			ft_putnbr(ent->d_ino);
-			ft_putstr("\t");
-			ft_putnbr(ent->d_type);
-			ft_putstr("\t");
-			ft_putstr(ent->d_name);
-			ft_putstr("\n");
-		}
-	}
-	closedir(dir);
+    if (!(elem = ft_lst_create()))
+        return (NULL);
+    elem->name = ft_strdup(name);
+    elem->path = ft_strdup(path);
+    elem->st = st;
+    if (lst)
+        ft_lst_put(lst, elem);
+    lst = elem;
+    return (lst);
 }
 
-t_list_ls	*ft_lst_d_new(void)
+t_uint ft_arg_exist_dir_file(char *name)
 {
-	t_list_ls	*list;
+    t_stat *file_stat;
 
-	if (!(list = (t_list_ls*)ft_memalloc(sizeof(t_list_ls))))
-		return (NULL);
-	list->prev = NULL;
-	list->next = NULL;
-	return (list);
+    if (!(file_stat = (t_stat*)malloc(sizeof(t_stat))))
+        ft_exit();
+    if (stat(name, file_stat) == -1)
+        return (0);
+    else if (S_ISDIR(file_stat->st_mode))
+        return (1);
+    else if (S_ISREG(file_stat->st_mode))
+        return (2);
+    return (0);
 }
 
-t_list_ls	*ft_lst_new(void)
+void ft_read_arg(char *arg_name_dir)
 {
-	t_list_ls	*list;
+    DIR *dir;
+    struct dirent   *ent;
+    t_list_ls       *lst;
+    t_stat          *buf_stat;
 
-	if (!(list = (t_list_ls*)ft_memalloc(sizeof(t_list_ls))))
-		return (NULL);
-	list->next = NULL;
-	return (list);
-}
+    if (!(lst = ft_lst_create()))
+        return ;
+    lst = NULL;
 
-void	ft_lst_add(t_list_ls **alst, t_list_ls *new)
-{
-	if (alst && *alst && new)
-	{
-		new->next = *alst;
-		*alst = new;
-	}
+    if (ft_arg_exist_dir_file(arg_name_dir) == 0)
+        ft_error(arg_name_dir);
+    else if (ft_arg_exist_dir_file(arg_name_dir) == 1)
+    {
+        if (!(dir = opendir(arg_name_dir)))
+            return ;
+        while ((ent = readdir(dir)))
+        {
+            // ft_putnbr(ent->d_type);
+            // ft_putstr("\n");
+            if (!(buf_stat = (t_stat*)malloc(sizeof(struct stat))))
+                ft_exit();
+            stat(ent->d_name, buf_stat);
+            lst = ft_add_elem(lst, ent->d_name, arg_name_dir, buf_stat);
+            // ft_putstr(ent->d_name);
+            // ft_putstr("\n");
+        }
+    }
+    else if (ft_arg_exist_dir_file(arg_name_dir) == 2)
+        ft_putendl("File");
+
+        //
+        // puts(lst->name);
+
+    while (lst->prev)
+    {
+        // puts(lst->name);
+        lst = lst->prev;
+    }
+    while (lst->next)
+    {
+        puts(lst->path);
+        puts(lst->name);
+        lst = lst->next;
+    }
 }
