@@ -28,7 +28,7 @@ t_list_ls *ft_add_elem(t_list_ls *lst, char *name, char *path, t_stat *st)
     return (lst);
 }
 
-void ft_ls_start(int argc, const char *argv[])
+int ft_ls_start(int argc, char *argv[])
 {
     int		nb_arg;
     t_flags	*flags;
@@ -41,12 +41,66 @@ void ft_ls_start(int argc, const char *argv[])
     nb_arg = ft_arg_parse_flags(flags, argv);
 
     if (!(lst_arg = ft_lst_create()))
-        return ;
+        return (-1);
     while (nb_arg < argc)
     {
-        lst_arg = ft_add_elem(ft_read_arg((char*)argv[nb_arg]))
+        ft_lst_read(ft_open_dir(argv[nb_arg]));
+
+        // lst_arg = ft_arg_parse_dir_file(argv[nb_arg]);
+        // lst_arg = ft_add_elem(lst_arg, argv[nb_arg], NULL, NULL);
+        // lst_arg = ft_add_elem(lst_arg, ft_arg_parse_dir_file(argv[nb_arg]))
         nb_arg++;
     }
+
+    // ft_lst_read();
+    return (0);
+}
+
+void ft_lst_read(t_list_ls *lst)
+{
+    while (lst->prev)
+        lst = lst->prev;
+    while (lst->next)
+    {
+        puts(lst->path);
+        puts(lst->name);
+        lst = lst->next;
+    }
+}
+
+t_list_ls   *ft_open_dir(char *name_dir)
+{
+    DIR *dir;
+    struct dirent   *ent;
+    t_list_ls       *lst;
+    t_stat          *buf_stat;
+
+    if (!(lst = ft_lst_create()))
+        return (NULL);
+    if (ft_arg_exist_dir_file(name_dir) == 0)
+        ft_error(name_dir);
+    else if (ft_arg_exist_dir_file(name_dir) == 1)
+    {
+        if (!(dir = opendir(name_dir)))
+            return (NULL);
+        while ((ent = readdir(dir)))
+        {
+            if (!(buf_stat = (t_stat*)malloc(sizeof(struct stat))))
+                ft_exit();
+            stat(ent->d_name, buf_stat);
+            lst->is_dir = 1;
+            lst = ft_add_elem(lst, ent->d_name, name_dir, buf_stat);
+        }
+    }
+    else if (ft_arg_exist_dir_file(name_dir) == 2)
+    {
+        if (!(buf_stat = (t_stat*)malloc(sizeof(struct stat))))
+            ft_exit();
+        stat(name_dir, buf_stat);
+        lst->is_dir = 0;
+        lst = ft_add_elem(lst, name_dir, NULL, buf_stat);
+    }
+    return (lst);
 }
 
 void ft_read_arg(char *arg_name_dir)
@@ -82,15 +136,5 @@ void ft_read_arg(char *arg_name_dir)
         ft_putendl("File");
         // puts(lst->name);
 
-    while (lst->prev)
-    {
-        // puts(lst->name);
-        lst = lst->prev;
-    }
-    while (lst->next)
-    {
-        puts(lst->path);
-        puts(lst->name);
-        lst = lst->next;
-    }
+    ft_lst_read(lst);
 }

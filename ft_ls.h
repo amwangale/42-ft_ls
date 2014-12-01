@@ -59,15 +59,18 @@ typedef struct s_flags
 	t_uint		flag_error;
 }				t_flags;
 
-void 			ft_ls_start(int argc, const char *argv[]);
+int 			ft_ls_start(int argc, char *argv[]);
 t_list_ls 		*ft_add_elem(t_list_ls *lst, char *name, char *path, t_stat *st);
 t_list_ls		*ft_lst_create(void);
 void			ft_lst_put(t_list_ls *elem1, t_list_ls *elem2);
 void 			ft_read_arg(char *arg_name_dir);
 
-int				ft_arg_parse_flags(t_flags *flags, const char **argv);
+t_list_ls   	*ft_open_dir(char *name_dir);
+void 			ft_lst_read(t_list_ls *lst);
+
+int				ft_arg_parse_flags(t_flags *flags, char **argv);
 t_uint 			ft_arg_exist_dir_file(char *name);
-t_list_ls 		ft_arg_parse_dir_file(char *arg_name_dir);
+t_list_ls 		*ft_arg_parse_dir_file(char *arg_name_dir);
 
 /*Error gestion*/
 void 			ft_exit(void);

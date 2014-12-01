@@ -23,7 +23,7 @@ static void		ft_arg_check(char c, t_flags *flags)
 	}
 }
 
-int		ft_arg_parse_flags(t_flags *flags, const char **argv)
+int		ft_arg_parse_flags(t_flags *flags, char **argv)
 {
 	int		i;
 	int		j;
@@ -67,24 +67,21 @@ t_uint ft_arg_exist_dir_file(char *name)
     return (0);
 }
 
-t_list_ls ft_arg_parse_dir_file(char *arg_name_dir)
+t_list_ls *ft_arg_parse_dir_file(char *arg_name_dir)
 {
-	DIR *dir;
-    struct dirent   *ent;
+	// DIR *dir;
+    // struct dirent   *ent;
     t_list_ls       *lst;
     t_stat          *buf_stat;
 
     if (!(lst = ft_lst_create()))
-        return ;
+        return (NULL);
     lst = NULL;
 
     if (!(buf_stat = (t_stat*)malloc(sizeof(t_stat))))
         ft_exit();
     if (ft_arg_exist_dir_file(arg_name_dir) == 0)
-	{
         ft_error(arg_name_dir);
-		return (NULL);
-	}
     else if (ft_arg_exist_dir_file(arg_name_dir) == 1)
     {
 		stat(arg_name_dir, buf_stat);
@@ -95,7 +92,8 @@ t_list_ls ft_arg_parse_dir_file(char *arg_name_dir)
     else if (ft_arg_exist_dir_file(arg_name_dir) == 2)
 	{
 		stat(arg_name_dir, buf_stat);
-		lst = ft_add_elem(lst, arg_name_dir, NULL, file_stat);
+		lst = ft_add_elem(lst, arg_name_dir, NULL, buf_stat);
 		return (lst);
 	}
+		return (NULL);
 }
