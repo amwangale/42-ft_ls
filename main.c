@@ -14,6 +14,9 @@
 
 int		main(int argc, char const *argv[])
 {
+
+	ft_ls_start(argc, argv);
+	/*
 	int		nb_arg;
 	t_flags	*flags;
 
@@ -28,7 +31,7 @@ int		main(int argc, char const *argv[])
 	{
 		ft_read_arg((char*)argv[nb_arg]);
 		nb_arg++;
-	}
+	}*/
 /*
 	ft_putnbr(argc);
 	ft_putchar('\n');

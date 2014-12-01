@@ -51,6 +51,19 @@ void ft_lst_put_between(t_list_ls *elem1, t_list_ls *elem2, t_list_ls *elem)
 	elem->next = elem2;
 	elem2->prev = elem;
 }
+/*
+void	ft_lstiter_ls(t_list_ls *lst, void (*f)(t_list_ls *elem))
+{
+	if (lst && (f))
+	{
+		while (lst)
+		{
+			(*f)(lst);
+			lst = lst->next;
+		}
+	}
+}
+*/
 
 // void ft_lst_push(t_list **alst, t_list *new)
 // {

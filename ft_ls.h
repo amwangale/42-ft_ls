@@ -59,21 +59,28 @@ typedef struct s_flags
 	t_uint		flag_error;
 }				t_flags;
 
-// void	ft_lst_put_between(t_list_ls *elem1, t_list_ls *elem2, t_list_ls *elem);
-// void	ft_lst_put(t_list_ls *elem1, t_list_ls *elem2);
-int			arg_parse_flags(t_flags *flags, const char **argv);
-// t_list_elem	*ft_lst_create_elem(char *name, t_stat st);
+void 			ft_ls_start(int argc, const char *argv[]);
+t_list_ls 		*ft_add_elem(t_list_ls *lst, char *name, char *path, t_stat *st);
 t_list_ls		*ft_lst_create(void);
 void			ft_lst_put(t_list_ls *elem1, t_list_ls *elem2);
-t_list_ls 		*ft_add_elem(t_list_ls *lst, char *name, char *path, t_stat *st);
 void 			ft_read_arg(char *arg_name_dir);
+
+int				ft_arg_parse_flags(t_flags *flags, const char **argv);
 t_uint 			ft_arg_exist_dir_file(char *name);
+t_list_ls 		ft_arg_parse_dir_file(char *arg_name_dir);
 
 /*Error gestion*/
 void 			ft_exit(void);
 void 			ft_error(char *str_error);
 void 			ft_error_exit(char *str_error);
 void 			ft_error_flags(char flag);
+
+/*Linked List*/
+// void	ft_lstiter_ls(t_list_ls *lst, void (*f)(t_list_ls *elem));
+
+// void	ft_lst_put_between(t_list_ls *elem1, t_list_ls *elem2, t_list_ls *elem);
+// void	ft_lst_put(t_list_ls *elem1, t_list_ls *elem2);
+// t_list_elem	*ft_lst_create_elem(char *name, t_stat st);
 // t_list	*ft_lst_create(void);
 // void		ft_ls(char *name_dir);
 // void		set_flags(t_flags *flags);
