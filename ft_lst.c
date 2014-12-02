@@ -23,7 +23,8 @@ t_list_ls	*ft_lst_create(void)
 	list->path = NULL;
 	list->st = NULL;
 	list->next = NULL;
-	list->prev = NULL;
+	// list->prev = NULL;
+	list->is_dir = 0;
 	return (list);
 }
 /*
@@ -36,14 +37,72 @@ t_list_elem *ft_lst_create_elem(char *name, t_stat st)
 	elem->name = name;
 	elem->st = st;
 	return (elem);
+}*/
+/*
+void	ft_lst_add(t_list **alst, t_list *new)
+{
+	if (alst && *alst && new)
+	{
+		new->next = (*alst);
+		*alst = new;
+	}
+}*/
+
+int ft_sort_name(t_list_ls *elem1, t_list_ls *elem2)
+{
+	return (ft_strcmp(elem1->name, elem2->name));
 }
-*/
+
+void ft_lst_add_end(t_list_ls **alst, t_list_ls *elem)
+{
+	t_list_ls *tmp;
+
+	tmp = *alst;
+	if (!(*alst))
+		*alst = elem;
+ 	else
+	{
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = elem;
+	}
+}
+
+void ft_lst_add_sort(t_list_ls **alst, t_list_ls *elem, int (*f)(t_list_ls *elem1, t_list_ls *elem2))
+{
+	t_list_ls *tmp_lst;
+
+	tmp_lst = *alst;
+	if (!(*alst))
+		*alst = elem;
+ 	else
+	{
+		while ((*f)(elem, tmp_lst) > 0 && tmp_lst->next)
+		{
+			tmp_lst = tmp_lst->next;
+		}
+		ft_lst_put(tmp_lst, elem);
+		//if ((*f)(tmp_lst, elem) > 0)
+		//else
+			//ft_lst_put(elem, tmp_lst);
+		// while (tmp_lst->next)
+		// 	tmp_lst = tmp_lst->next;
+	}
+}
+
+void ft_lst_put(t_list_ls *elem1, t_list_ls *elem2)
+{
+	elem1->next = elem2;
+}
+
+/*
 void ft_lst_put(t_list_ls *elem1, t_list_ls *elem2)
 {
 	elem1->next = elem2;
 	elem2->prev = elem1;
 }
-
+*/
+/*
 void ft_lst_put_between(t_list_ls *elem1, t_list_ls *elem2, t_list_ls *elem)
 {
 	elem1->next = elem;
@@ -51,7 +110,7 @@ void ft_lst_put_between(t_list_ls *elem1, t_list_ls *elem2, t_list_ls *elem)
 	elem->next = elem2;
 	elem2->prev = elem;
 }
-/*
+*/
 void	ft_lstiter_ls(t_list_ls *lst, void (*f)(t_list_ls *elem))
 {
 	if (lst && (f))
@@ -63,7 +122,6 @@ void	ft_lstiter_ls(t_list_ls *lst, void (*f)(t_list_ls *elem))
 		}
 	}
 }
-*/
 
 // void ft_lst_push(t_list **alst, t_list *new)
 // {

@@ -38,7 +38,7 @@ typedef struct 			s_list_ls
 	char				*path;
 	t_stat				*st;
 	t_uint				is_dir;
-	struct s_list_ls	*prev;
+	// struct s_list_ls	*prev;
 	struct s_list_ls	*next;
 }						t_list_ls;
 /*
@@ -60,13 +60,20 @@ typedef struct s_flags
 }				t_flags;
 
 int 			ft_ls_start(int argc, char *argv[]);
-t_list_ls 		*ft_add_elem(t_list_ls *lst, char *name, char *path, t_stat *st);
+void *ft_add_elem(t_list_ls **lst, char *name, char *path, t_stat *st, t_uint dir);
 t_list_ls		*ft_lst_create(void);
-void			ft_lst_put(t_list_ls *elem1, t_list_ls *elem2);
+void 			ft_lst_add_end(t_list_ls **alst, t_list_ls *elem);
+void ft_lst_add_sort(t_list_ls **aslt, t_list_ls *elem, int (*f)(t_list_ls *elem1, t_list_ls *elem2));
+void ft_lst_put(t_list_ls *elem1, t_list_ls *elem2);
+// void			ft_lst_put(t_list_ls *elem1, t_list_ls *elem2);
+int ft_sort_name(t_list_ls *elem1, t_list_ls *elem2);
+
 void 			ft_read_arg(char *arg_name_dir);
 
 t_list_ls   	*ft_open_dir(char *name_dir);
 void 			ft_lst_read(t_list_ls *lst);
+
+
 
 int				ft_arg_parse_flags(t_flags *flags, char **argv);
 t_uint 			ft_arg_exist_dir_file(char *name);

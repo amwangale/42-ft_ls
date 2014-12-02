@@ -66,7 +66,7 @@ t_uint ft_arg_exist_dir_file(char *name)
         return (2);
     return (0);
 }
-
+/*
 t_list_ls *ft_arg_parse_dir_file(char *arg_name_dir)
 {
 	// DIR *dir;
@@ -85,15 +85,15 @@ t_list_ls *ft_arg_parse_dir_file(char *arg_name_dir)
     else if (ft_arg_exist_dir_file(arg_name_dir) == 1)
     {
 		stat(arg_name_dir, buf_stat);
-        lst = ft_add_elem(lst, arg_name_dir, NULL, buf_stat);
+        lst = ft_add_elem(lst, arg_name_dir, NULL, buf_stat, 1);
 		lst->is_dir = 1;
         return (lst);
     }
     else if (ft_arg_exist_dir_file(arg_name_dir) == 2)
 	{
 		stat(arg_name_dir, buf_stat);
-		lst = ft_add_elem(lst, arg_name_dir, NULL, buf_stat);
+		lst = ft_add_elem(lst, arg_name_dir, NULL, buf_stat, 0);
 		return (lst);
 	}
 		return (NULL);
-}
+}*/
