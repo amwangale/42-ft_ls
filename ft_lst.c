@@ -71,6 +71,7 @@ void ft_lst_add_end(t_list_ls **alst, t_list_ls *elem)
 void ft_lst_add_sort(t_list_ls **alst, t_list_ls *elem, int (*f)(t_list_ls *elem1, t_list_ls *elem2))
 {
 	t_list_ls *tmp_lst;
+	t_list_ls *tmp_prev;
 
 	tmp_lst = *alst;
 	if (!(*alst))
@@ -79,9 +80,31 @@ void ft_lst_add_sort(t_list_ls **alst, t_list_ls *elem, int (*f)(t_list_ls *elem
 	{
 		while ((*f)(elem, tmp_lst) > 0 && tmp_lst->next)
 		{
+			// ft_putendl(tmp_lst->name);
+			tmp_prev = tmp_lst;
 			tmp_lst = tmp_lst->next;
 		}
-		ft_lst_put(tmp_lst, elem);
+		if (tmp_lst->next)
+		{
+			ft_putendl("IN")
+			ft_lst_put(tmp_prev, elem);
+
+		}
+		else
+		{
+			tmp_lst->next = elem;
+		}
+			// ft_lst_put(tmp_prev, elem);
+
+		// if (!(tmp_lst->next))
+			// ft_lst_put(elem, tmp_lst);
+		// if(!tmp_lst)
+		// {
+			// ft_putendl("NULL");
+			// tmp_lst = tmp_prev;
+		// }
+
+		// ft_putendl(tmp_prev->name);
 		//if ((*f)(tmp_lst, elem) > 0)
 		//else
 			//ft_lst_put(elem, tmp_lst);
@@ -92,6 +115,7 @@ void ft_lst_add_sort(t_list_ls **alst, t_list_ls *elem, int (*f)(t_list_ls *elem
 
 void ft_lst_put(t_list_ls *elem1, t_list_ls *elem2)
 {
+	elem2->next = elem1->next;
 	elem1->next = elem2;
 }
 
